@@ -2,14 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Graph from '../../assets/Graph.png';
 import SearchBox from "../../components/common/SearchBox";
-import CountryFlight from '../../components/userPagesComponents/Home/CountryFlight';
-import Destinations from '../../components/userPagesComponents/Home/Destination';
-
-import Reviews from '../../components/userPagesComponents/Home/Reviews';
-import  FAQSection  from '../../components/userPagesComponents/Home/FAQSection';
+import CountryFlight from '../../components/userPagesComponents/home/CountryFlight';
+import Destinations from '../../components/userPagesComponents/home/Destination';
+import { headingWords } from '../../data'
+import FAQSection from '../../components/userPagesComponents/home/FAQSection';
 
 const Home = () => {
-  const headingWords = ["It’s", "more", "than", "just", "a", "trip"];
+
 
   return (
     <>
@@ -42,14 +41,13 @@ const Home = () => {
         </h1>
         <SearchBox />
 
-        
+
       </div>
 
       <CountryFlight />
       <Destinations />
-      <FAQSection/>
-      {/* <UniqueStays /> */}
-      <Reviews />
+      <FAQSection />
+
     </>
   );
 };

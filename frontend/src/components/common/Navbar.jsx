@@ -1,14 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../redux/slices/authSlice'; // Import logout action
+import { logout } from '../../redux/slices/authSlice';
+import Cookies from 'js-cookie';
+import JadoAnimation from './JadoAnimation'; // Import JadoAnimation
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth); // Access user data from Redux
+  const navigate = useNavigate();
+
+  let { user } = useSelector((state) => state.auth);
+
+  // Load user from cookies if Redux state is empty
+  if (!user) {
+    const userInfoCookie = Cookies.get('userInfo');
+    if (userInfoCookie) {
+      try {
+        user = JSON.parse(userInfoCookie);
+      } catch (err) {
+        console.error("Failed to parse user cookie", err);
+      }
+    }
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -20,7 +36,6 @@ const Navbar = () => {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -32,41 +47,47 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout()); // Dispatch logout action
-    localStorage.removeItem('user-info'); // Clear user info from local storage
+    dispatch(logout());
+    Cookies.remove('userInfo');
+    Cookies.remove('token');
+    navigate('/login'); // redirect to login page
   };
 
   return (
     <nav className="bg-white py-4 shadow-md">
       <div className="max-w-full mx-auto px-6 flex items-center justify-between">
-        <div className="cursor-pointer flex items-center justify-center w-full md:w-auto">
-          <h1 className="text-xl text-[#1e3a8a] font-semibold">Jadoo</h1>
+        
+        <div className="mr-6">
+          <JadoAnimation /> {/* Here we are using JadoAnimation as the logo */}
         </div>
 
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6 text-sm text-[#1e3a8a] font-medium">
+          <Link to="/" className="hover:text-[#1e3a8a]">Home</Link>
           <Link to="/flight-search" className="hover:text-[#1e3a8a]">Flight</Link>
           <Link to="/about" className="hover:text-[#1e3a8a]">About</Link>
           <Link to="/contact" className="hover:text-[#1e3a8a]">Contact</Link>
-          <Link to="/logout" className="hover:text-[#1e3a8a]">Logout</Link>
-          
 
-          {user ? ( // If user is logged in
-            <>
-              <Link to="/user-dashboard" className="flex items-center space-x-2">
+          {user ? (
+            <div className="flex items-center space-x-4">
+              {/* Logout Button (left) */}
+              <button onClick={handleLogout} className="hover:text-red-600">
+                Logout
+              </button>
+              {/* Profile Avatar (right) */}
+              <div 
+                onClick={() => navigate('/user-dashboard')} 
+                className="cursor-pointer flex items-center"
+              >
                 {user.image ? (
-                  <img
-                    src={user.image}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full"
-                  />
+                  <img src={user.image} alt="Profile" className="w-8 h-8 rounded-full" />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
                     <span className="text-black font-semibold">{getInitials(user.username)}</span>
                   </div>
                 )}
-              </Link>
-              
-            </>
+              </div>
+            </div>
           ) : (
             <>
               <Link to="/login">
@@ -92,55 +113,50 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        ref={menuRef}
-        className={`md:hidden fixed top-0 right-0 w-1/2 h-full bg-white transition-transform transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} z-50`}
-      >
-        <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 text-black text-2xl">&times;</button>
-        <div className="flex flex-col items-center space-y-6 pt-12">
-          <Link to="/flight-search" className="text-[#1e3a8a] text-lg font-semibold p-4 w-full text-center hover:bg-indigo-600">Flight</Link>
-          <Link to="/about" className="text-[#1e3a8a] text-lg font-semibold p-4 w-full text-center hover:bg-indigo-600">Hotels</Link>
-          <Link to="/contact" className="text-[#1e3a8a] text-lg font-semibold p-4 w-full text-center hover:bg-indigo-600">Contact</Link>
-          <Link to="/logout" className="text-[#1e3a8a] text-lg font-semibold p-4 w-full text-center hover:bg-indigo-600">Logout</Link>
+      {isOpen && (
+        <div ref={menuRef} className="md:hidden px-6 pt-4 pb-6 space-y-4 bg-gray-100">
+          <Link to="/" className="hover:text-[#1e3a8a]">Home</Link>
+          <Link to="/flight-search" className="block hover:text-[#1e3a8a]">Flight</Link>
+          <Link to="/about" className="block hover:text-[#1e3a8a]">About</Link>
+          <Link to="/contact" className="block hover:text-[#1e3a8a]">Contact</Link>
+          
 
           {user ? (
             <>
-              <Link to="/user-dashboard" className="flex flex-col items-center">
+              {/* Logout first */}
+              <button onClick={handleLogout} className="block text-red-600">
+                Logout
+              </button>
+              {/* Profile second */}
+              <div 
+                onClick={() => { setIsOpen(false); navigate('/user-dashboard'); }} 
+                className="flex items-center space-x-2 cursor-pointer"
+              >
                 {user.image ? (
-                  <img
-                    src={user.image}
-                    alt="Profile"
-                    className="w-16 h-16 rounded-full"
-                  />
+                  <img src={user.image} alt="Profile" className="w-8 h-8 rounded-full" />
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
                     <span className="text-black font-semibold">{getInitials(user.username)}</span>
                   </div>
                 )}
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="text-[#1e3a8a] text-lg font-semibold p-4 w-full text-center hover:bg-indigo-600"
-              >
-                Logout
-              </button>
+              </div>
             </>
           ) : (
             <>
-              <Link to="/login">
-                <button className="text-[#1e3a8a] text-lg font-semibold p-4 w-full text-center hover:bg-indigo-600">
+              <Link to="/login" className="block">
+                <button className="w-full border border-[#1e3a8a] text-[#1e3a8a] px-4 py-2 rounded-full">
                   Sign In
                 </button>
               </Link>
-              <Link to="/sign-up">
-                <button className="bg-[#1e3a8a] text-white text-lg font-semibold p-4 w-full text-center hover:bg-indigo-700">
+              <Link to="/sign-up" className="block">
+                <button className="w-full bg-[#1e3a8a] text-white px-4 py-2 rounded-full hover:bg-indigo-700">
                   Sign Up
                 </button>
               </Link>
             </>
           )}
         </div>
-      </div>
+      )}
     </nav>
   );
 };

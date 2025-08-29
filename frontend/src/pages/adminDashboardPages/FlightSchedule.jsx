@@ -1,101 +1,103 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchFlights, addFlight, deleteFlight, updateFlight } from '../../redux/slices/flightSlice';
+import {
+  fetchFlights,
+  addFlight,
+  deleteFlight,
+  updateFlight,
+} from '../../redux/slices/flightSlice';
 import AddFlightForm from '../../components/adminPagesComponents/AddFlightForm';
 import FlightScheduleListing from '../../components/adminPagesComponents/FlightScheduleListing';
 
 const FlightSchedule = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const [isFormVisible, setIsFormVisible] = useState(false);
-    const [flightToUpdate, setFlightToUpdate] = useState(null);
+  const [showForm, setShowForm] = useState(false);          
+  const [editingFlight, setEditingFlight] = useState(null); 
 
-    // ✅ Component load hone par flights ko fetch karein
-    useEffect(() => {
-        dispatch(fetchFlights());
-    }, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(fetchFlights());
+  }, [dispatch]);
+  const toggleForm = () => {
+    setShowForm((prev) => !prev);
+    setEditingFlight(null); 
+  };
 
-    const handleToggleForm = () => {
-        setIsFormVisible(!isFormVisible);
-        setFlightToUpdate(null);
-    };
+  const handleSubmit = async (formData) => {
+    try {
+      if (editingFlight) {
+        await dispatch(updateFlight({ id: editingFlight._id, formData })).unwrap();
+      } else {
+        await dispatch(addFlight(formData)).unwrap();
+      }
 
-    const handleFormSubmit = async (formData) => {
-        try {
-            if (flightToUpdate) {
-                await dispatch(updateFlight({ id: flightToUpdate._id, formData })).unwrap();
-            } else {
-                await dispatch(addFlight(formData)).unwrap();
-            }
-            
-            // ✅ Operation successful hone ke baad flights ko dobara fetch karein
-            dispatch(fetchFlights()); 
+     
+      dispatch(fetchFlights());
+      setShowForm(false);
+      setEditingFlight(null);
+    } catch (error) {
+      console.error('Submit error:', error);
+    }
+  };
 
-            setIsFormVisible(false);
-            setFlightToUpdate(null);
-        } catch (error) {
-            console.error("Error submitting flight data:", error);
-        }
-    };
+  
+  const handleDelete = async (id) => {
+    const confirmed = confirm("Are you sure you want to delete this flight?");
+    if (!confirmed) return;
 
-    const handleDeleteFlight = (flightId) => {
-        if (window.confirm("Are you sure you want to delete this flight?")) {
-            dispatch(deleteFlight(flightId))
-                .unwrap()
-                .then(() => {
-                    // ✅ Deletion ke baad flights ki list ko dobara fetch karein
-                    dispatch(fetchFlights());
-                })
-                .catch(error => {
-                    console.error("Error deleting flight:", error);
-                });
-        }
-    };
+    try {
+      await dispatch(deleteFlight(id)).unwrap();
+      dispatch(fetchFlights());
+    } catch (error) {
+      console.error('Delete error:', error);
+    }
+  };
 
-    const handleUpdateFlight = (flightData) => {
-        setFlightToUpdate(flightData);
-        setIsFormVisible(true);
-    };
+  const handleEdit = (flight) => {
+    setEditingFlight(flight);
+    setShowForm(true);
+  };
 
-    return (
-        <div className="flex justify-center items-center py-12 px-6 bg-gray-100">
-            <div className="w-full max-w-7xl">
-                <div className="bg-white p-8 rounded-lg shadow-xl">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-6">Flight Schedule Management</h1>
-                    
-                    {isFormVisible && (
-                        <div className="mb-8 p-6 bg-gray-50 border border-gray-200 rounded-lg">
-                            <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-                                {flightToUpdate ? 'Update Flight' : 'Add New Flight'}
-                            </h2>
-                            <AddFlightForm
-                                onClose={handleToggleForm}
-                                onSubmit={handleFormSubmit}
-                                flightToEdit={flightToUpdate}
-                            />
-                        </div>
-                    )}
-                    
-                    <div className="flex justify-end mb-6">
-                        <button
-                            onClick={handleToggleForm}
-                            className="bg-[#1e3a8a] text-white font-bold py-3 px-6 rounded-md shadow-lg hover:bg-[#152960] transition-colors duration-300"
-                        >
-                            {isFormVisible ? 'Hide Form' : 'Add New Flight'}
-                        </button>
-                    </div>
+  return (
+    <div className="py-12 px-6 bg-gray-100 flex justify-center items-center">
+      <div className="w-full max-w-7xl">
+        <div className="bg-white p-8 rounded-lg shadow-xl">
+          <h1 className="text-4xl font-bold text-gray-800 mb-6">
+            Flight Schedule Management
+          </h1>
 
-                    <FlightScheduleListing
-                        onDeleteFlight={handleDeleteFlight}
-                        onUpdateFlight={handleUpdateFlight}
-                    />
-                </div>
+          {showForm && (
+            <div className="mb-8 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+                {editingFlight ? 'Update Flight' : 'Add New Flight'}
+              </h2>
+
+              <AddFlightForm
+                onClose={toggleForm}
+                onSubmit={handleSubmit}
+                flightToEdit={editingFlight}
+              />
             </div>
+          )}
+
+          <div className="flex justify-end mb-6">
+            <button
+              onClick={toggleForm}
+              className="bg-[#1e3a8a] hover:bg-[#152960] transition-colors duration-300 text-white font-bold py-3 px-6 rounded-md shadow-lg"
+            >
+              {showForm ? 'Hide Form' : 'Add New Flight'}
+            </button>
+          </div>
+
+          <FlightScheduleListing
+            onDeleteFlight={handleDelete}
+            onUpdateFlight={handleEdit}
+          />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default FlightSchedule;
-
-
-

@@ -1,24 +1,20 @@
-// models/Flight.js
 const mongoose = require('mongoose');
 
-// Define Flight Schema
 const flightSchema = new mongoose.Schema({
   airline: String,
-  logo: String, // This will store the path to the logo file
+  logo: String,            // '/uploads/filename.ext'
   flightCode: String,
-  departure: String,
+  departure: String,       // "7:00 AM - 4:15 PM"
   departureTime: String,
   arrivalTime: String,
-  stop: String,
+  stop: String,            // "0", "1", ...
   duration: String,
   price: Number,
   type: String,
   baggage: String,
-  meal: String,
-  lax: String,
-  laf: String
-});
+  meal: String,            // "No Meal" | "1 Meal" | "2 Meals"
+  lax: String,             // from airport
+  laf: String              // to airport
+}, { timestamps: true });
 
-const Flight = mongoose.model('Flight', flightSchema);
-
-module.exports = Flight;
+module.exports = mongoose.model('Flight', flightSchema);

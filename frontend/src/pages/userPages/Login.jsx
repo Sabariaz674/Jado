@@ -1,11 +1,12 @@
+// src/pages/auth/Login.jsx
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginSuccess, setError } from '../../redux/slices/authSlice';
-import GoogleLogin from './GoogleLogin'
+import GoogleLogin from './GoogleLogin';
 import LeftAnimation from '../../components/common/LeftAnimation';
-import Cookies from 'js-cookie';  // Import js-cookie
-import axios from 'axios'; // Import axios
+import Cookies from 'js-cookie';
+import { loginApi } from '../../api/auth'; // <-- use auth helpers
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,40 +18,36 @@ const Login = () => {
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    dispatch(setError('')); // Clear any previous error messages
+    dispatch(setError(''));
 
     try {
-      
-      const response = await axios.post(
-        'http://localhost:8080/auth/login',
-        { email, password },
-        { withCredentials: true } 
-      );
+      const { data, status } = await loginApi({ email, password });//helper function
 
-     
-      const result = response.data;
+      if (status === 200) {
+        // Redux
+        dispatch(loginSuccess({ user: data.user, token: data.token }));
 
-      if (response.status === 200) {
-        dispatch(loginSuccess({ user: result.user }));
-        // Store user info in a cookie
-        Cookies.set('user-info', JSON.stringify(result.user), { expires: 7, secure: true, sameSite: 'Strict' });
+        // Cookies (agar httpOnly cookie server set kar raha ho to yeh optional hai)
+        Cookies.set('userInfo', JSON.stringify(data.user), {
+          expires: 7,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'Strict',
+        });
+        Cookies.set('token', data.token, {
+          expires: 7,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'Strict',
+        });
 
-        if (result.user.isAdmin) {
-          navigate('/admin-dashboard');
-        } else {
-          navigate('/');
-        }
+        if (data.user?.isAdmin) navigate('/admin-dashboard');
+        else navigate('/');
       }
     } catch (err) {
-     
       if (err.response) {
-        
-        dispatch(setError(err.response.data.message || '❌ Something went wrong'));
+        dispatch(setError(err.response.data?.message || '❌ Something went wrong'));
       } else if (err.request) {
-       
         dispatch(setError('❌ No response from server. Please try again.'));
       } else {
-        
         dispatch(setError('❌ Something went wrong with the request.'));
       }
     }

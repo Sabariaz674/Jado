@@ -24,28 +24,28 @@ const DashboardContent = ({ stats }) => {
           value={stats.completedFlights}
           percentage={stats.completedPercentage}
           icon={completedIcon}
-          altText="Completed"
+          
         />
         <AdminStatCard
           title="Active Flights"
           value={stats.activeFlights}
           percentage={stats.activePercentage}
           icon={activeIcon}
-          altText="Active"
+          
         />
         <AdminStatCard
           title="Cancelled Flights"
           value={stats.canceledFlights}
           percentage={stats.canceledPercentage}
           icon={canceledIcon}
-          altText="Cancelled"
+          
         />
         <AdminStatCard
           title="Total Revenue"
           value={stats.totalRevenue}
           percentage={stats.revenuePercentage}
           icon={revenueIcon}
-          altText="Revenue"
+          
         />
       </div>
     </div>

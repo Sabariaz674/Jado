@@ -1,145 +1,167 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+// src/components/userPagesComponents/passengerLnfo/PassengerForm.jsx
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setPassengerData, savePassenger } from "../../../redux/slices/PassengerSlice";
+import {
+  defaultFormData,
+  isValidEmail,
+  isValidPhone,
+  getFallbackFlightId,
+  getGenderChipClass
+} from "../../../data";
 
 const PassengerForm = () => {
- 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
- 
-  const handleSelectSeats = () => {
-    
-    navigate('/seat-selection');
+  const selectedSeat = useSelector(s => s.seats.selectedSeat);
+  const seatGender = useSelector(s => s.seats.gender);
+  const seatFlightId = useSelector(s => s.seats.flightId);
+  const selectedFlights = useSelector(s => s.flights?.selectedFlights || []);
+
+  const flightId = seatFlightId || getFallbackFlightId(selectedFlights);
+
+  const [formData, setFormData] = useState(defaultFormData);
+
+  const handleChange = (field) => (e) => {
+    setFormData(prev => ({ ...prev, [field]: e.target.value }));
   };
 
+  useEffect(() => {
+    if (formData.sameAsP1) {
+      setFormData(prev => ({
+        ...prev,
+        ecFirst: prev.firstName,
+        ecLast: prev.lastName,
+        ecEmail: prev.email,
+        ecPhone: prev.phone
+      }));
+    }
+  }, [formData.sameAsP1, formData.firstName, formData.lastName, formData.email, formData.phone]);
+
+  const validate = () => {
+    return (
+      formData.firstName &&
+      formData.lastName &&
+      formData.dob &&
+      isValidEmail(formData.email) &&
+      isValidPhone(formData.phone) &&
+      selectedSeat
+    );
+  };
+
+  const handlePayment = async () => {
+    if (!validate()) {
+      console.log("Please fill all required fields and select a seat.");
+      return;
+    }
+
+    const payload = {
+      ...formData,
+      gender: seatGender,
+      seatId: selectedSeat,
+      flightId
+    };
+
+    dispatch(setPassengerData(payload));
+    const result = await dispatch(savePassenger(payload));
+    if (savePassenger.rejected.match(result)) {
+      console.log(result.payload?.message || "Could not save passenger");
+    } else {
+      navigate("/payment");
+    }
+  };
+
+  const genderChip = getGenderChipClass(seatGender);
+
+  const TextInput = ({ label, value, onChange, ...rest }) => (
+    <div className="flex flex-col">
+      <label className="text-sm text-gray-500 mb-1">{label}</label>
+      <input
+        {...rest}
+        value={value}
+        onChange={onChange}
+        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]"
+      />
+    </div>
+  );
+
   return (
-    <div className="flex-1 w-full lg:w-auto bg-white rounded-xl shadow-lg p-6 lg:p-10">
-      <div className="mb-8">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Passenger information</h2>
-        <p className="text-sm text-gray-500 max-w-2xl">
-          Enter the required information for each traveler and be sure that it exactly matches
-          the government-issued ID presented at the airport.
-        </p>
+    <div className="bg-white rounded-xl shadow-lg p-6 lg:p-10 w-full">
+      <div className="mb-6 flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Passenger Information</h2>
+          <p className="text-sm text-gray-500">Enter traveler details exactly as on the government ID.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={`px-3 py-1 rounded-full text-sm capitalize ${genderChip}`}>{seatGender || "—"}</span>
+          <span className={`px-3 py-1 rounded-full text-sm ${genderChip}`} title="Selected seat">
+            Seat: {selectedSeat || "—"}
+          </span>
+        </div>
       </div>
 
-      {/* Passenger 1 (Adult) Form */}
+      {/* Passenger 1 */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Passenger 1 (Adult)</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">First name*</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Middle</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Last name*</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Suffix</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          {/* Gender selection added here */}
+          <TextInput label="First name*" value={formData.firstName} onChange={handleChange("firstName")} />
+          <TextInput label="Last name*" value={formData.lastName} onChange={handleChange("lastName")} />
           <div className="flex flex-col">
             <label className="text-sm text-gray-500 mb-1">Gender*</label>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center">
-                <input type="radio" id="male" name="gender" value="male" className="h-4 w-4 text-[#1e3a8a] focus:ring-[#1e3a8a] border-gray-300" />
-                <label htmlFor="male" className="ml-2 text-sm text-gray-700">Male</label>
-              </div>
-              <div className="flex items-center">
-                <input type="radio" id="female" name="gender" value="female" className="h-4 w-4 text-[#1e3a8a] focus:ring-[#1e3a8a] border-gray-300" />
-                <label htmlFor="female" className="ml-2 text-sm text-gray-700">Female</label>
-              </div>
-            </div>
+            <input
+              readOnly value={seatGender || ""}
+              className="p-2 border border-gray-200 rounded-md bg-gray-50 text-gray-700"
+              placeholder="Select on seat page"
+            />
+            <span className="text-xs text-gray-400 mt-1">(Change gender from Seat Selection page)</span>
           </div>
-          {/* End of new gender section */}
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Date of birth*</label>
-            <input type="text" placeholder="MM/DD/YYYY" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Email address*</label>
-            <input type="email" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Phone number*</label>
-            <input type="tel" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Redress number</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Known traveller number</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
+          <TextInput label="Date of birth*" type="date" value={formData.dob} onChange={handleChange("dob")} />
+          <TextInput label="Email address*" type="email" value={formData.email} onChange={handleChange("email")} />
+          <TextInput label="Phone number*" type="tel" value={formData.phone} onChange={handleChange("phone")} />
         </div>
       </div>
 
-      {/* Emergency Contact Information (rest of the form remains the same) */}
+      {/* Emergency contact */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-700 mb-4">Emergency contact information</h3>
         <div className="flex items-center mb-4">
-          <input type="checkbox" id="sameAsPassenger1" className="mr-2 h-4 w-4 text-[#1e3a8a] focus:ring-[#1e3a8a] border-gray-300 rounded" />
-          <label htmlFor="sameAsPassenger1" className="text-sm text-gray-500">Same as Passenger 1</label>
+          <input
+            type="checkbox"
+            checked={formData.sameAsP1}
+            onChange={(e) => setFormData(prev => ({ ...prev, sameAsP1: e.target.checked }))}
+            className="mr-2 h-4 w-4 text-[#1e3a8a] border-gray-300 rounded"
+          />
+          <label className="text-sm text-gray-500">Same as Passenger 1</label>
         </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">First name*</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Last name*</label>
-            <input type="text" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Email address*</label>
-            <input type="email" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
-          <div className="flex flex-col">
-            <label className="text-sm text-gray-500 mb-1">Phone number*</label>
-            <input type="tel" className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]" />
-          </div>
+          <TextInput placeholder="First name" value={formData.ecFirst} onChange={handleChange("ecFirst")} />
+          <TextInput placeholder="Last name" value={formData.ecLast} onChange={handleChange("ecLast")} />
+          <TextInput placeholder="Email" type="email" value={formData.ecEmail} onChange={handleChange("ecEmail")} />
+          <TextInput placeholder="Phone" type="tel" value={formData.ecPhone} onChange={handleChange("ecPhone")} />
         </div>
       </div>
 
-      {/* Bag Information */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">Bag information</h3>
-        <p className="text-sm text-gray-500 mb-4">
-          Each passenger is allowed one free carry-on bag and one personal item. First
-          checked bag for each passenger is also free. Second bag check fees are waived for
-          loyalty program members.
-          
-        </p>
-        <div className="flex items-center justify-between sm:justify-start sm:gap-10">
-          <span className="text-sm text-gray-500">Passenger 1</span>
-          <span className="text-sm text-gray-800 font-medium">First Last</span>
-          <div className="flex items-center ml-auto sm:ml-0 gap-2">
-            <span className="text-sm text-gray-500">Checked bags</span>
-            <div className="flex items-center border border-gray-300 rounded-md">
-              <button className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-l-md">-</button>
-              <span className="px-3 py-1 text-gray-800">1</span>
-              <button className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-r-md">+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Action Buttons */}
+      {/* Buttons */}
       <div className="mt-8 flex flex-col sm:flex-row gap-4">
-        <button className="bg-white text-[#1e3a8a] border border-[#1e3a8a] font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition">
-          Save and close
-        </button>
-        {/* Step 4: Add the onClick handler to the "Select seats" button */}
         <button
-          className="bg-[#1e3a8a] text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition"
-          onClick={handleSelectSeats}
+          type="button"
+          className="bg-white text-[#1e3a8a] border border-[#1e3a8a] font-semibold py-3 px-6 rounded-lg hover:bg-gray-100 transition"
+          onClick={() => navigate(-1)}
         >
-          Select seats
+          Back
+        </button>
+        <button
+          type="button"
+          disabled={!selectedSeat}
+          onClick={handlePayment}
+          className={`font-semibold py-3 px-6 rounded-lg transition ${
+            selectedSeat ? "bg-[#1e3a8a] text-white hover:bg-blue-800" : "bg-gray-200 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          Payment
         </button>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import worldMap from '../../assets/flightmap2.png'; // Import your image here
 
-const PopularDestinations = () => {
+const  PopularDestinations = () => {
     const [timePeriod, setTimePeriod] = useState('week'); // Default to "This Week"
 
     const handleTimePeriodChange = (value) => {

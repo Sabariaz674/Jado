@@ -1,20 +1,18 @@
-// config/multer.js
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Configure Multer for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = 'uploads/';
+    const uploadPath = path.join(__dirname, '..', 'uploads');
     fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, unique + path.extname(file.originalname));
   }
 });
 
-const upload = multer({ storage: storage });
-
+const upload = multer({ storage });
 module.exports = upload;

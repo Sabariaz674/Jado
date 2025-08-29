@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import { moresearch } from '../../../data'; // Import the correct data
-import Card from '../../common/cards/HotelCard'; // Import the Card component
+import { Link } from 'react-router-dom'; 
+import { moresearch } from '../../../data';
+import Card from '../../common/cards/HotelCard'; 
 
 const PlacesSearched = () => {
   return (

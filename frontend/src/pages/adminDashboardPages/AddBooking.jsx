@@ -1,40 +1,8 @@
 import React from 'react';
-
+import {bookings} from '../../data'
 const AddBooking = () => {
   // Sample data to be displayed in the table rows
-  const bookings = [
-    {
-      flightNo: "CN-K12345",
-      airline: "CloudNine Airlines",
-      route: "CDO-JFK",
-      departure: "9:00 AM",
-      arrival: "12:00 PM",
-      date: "2028-07-01",
-      passengers: 187,
-      status: "Confirmed",
-    },
-    {
-      flightNo: "SH-07456",
-      airline: "SkyHigh Airlines",
-      route: "FRA-BKK",
-      departure: "7:00 AM",
-      arrival: "3:00 PM",
-      date: "2028-07-01",
-      passengers: 177,
-      status: "Pending",
-    },
-    {
-      flightNo: "TR-54321",
-      airline: "Traveler Airways",
-      route: "LHR-DXB",
-      departure: "8:00 PM",
-      arrival: "5:00 AM",
-      date: "2028-07-02",
-      passengers: 150,
-      status: "Cancelled",
-    },
-  ];
-
+  
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 font-sans">
       {/* Header section with flexible layout for responsiveness */}

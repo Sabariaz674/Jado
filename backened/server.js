@@ -1,52 +1,51 @@
-// server.js
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
-const flightRoutes = require('./routes/flightRoutes');
-const errorMiddleware = require('./middlewares/errorMiddleware');
-const { validateSignup, validateLogin } = require('./middlewares/validationMiddleware');
-const authMiddleware = require('./middlewares/authMiddleware');
+const path = require('path');
 const cookieParser = require('cookie-parser');
-const path = require('path'); // Import the path module
+const connectDB = require('./config/db');
+ const authRoutes = require('./routes/authRoutes');
+const flightRoutes = require('./routes/flightRoutes');
+const passengerRoutes = require('./routes/passengerRoutes'); 
+const seatRoutes = require('./routes/seatRoutes');
 
-const app = express();
 dotenv.config();
+const app = express();
 
-// Cross-Origin-Opener-Policy and Cross-Origin-Embedder-Policy headers
+
 app.use((req, res, next) => {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
   next();
 });
 
-// CORS configuration: Allow requests from your frontend (React)
+// CORS
 app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
+  origin: 'http://localhost:5173',  
+  credentials: true,  
 }));
 
-// Middleware
-app.use(express.json());
-app.use(cookieParser());
 
-// Serve static files from the 'uploads' directory
-// This is crucial for displaying the uploaded logo images
+app.use(express.json());  
+app.use(cookieParser());  
+
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Connect to DB
 connectDB();
 
-
+// Routes
 app.use('/auth', authRoutes);
 app.use('/api/flights', flightRoutes);
+app.use('/api/passengers', passengerRoutes); 
+app.use('/api/seats', seatRoutes);
 
-
-app.use(errorMiddleware);
-
-// Start the server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ message: 'Server error' });
 });
+
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

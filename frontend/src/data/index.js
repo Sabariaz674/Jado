@@ -342,3 +342,146 @@ export const jadooFaqData = [
     content: 'Jadoo is committed to sustainable travel. During your search, you can use our filters to identify flights with lower carbon emissions, helping you make an eco-friendly choice.',
   },
 ];
+export const headingWords = ["It’s", "more", "than", "just", "a", "trip"];
+
+export const economyLayout = [
+  [{ seat: "6A" }, { seat: "6B" }, { seat: "6C" }, null, { seat: "6D" }, { seat: "6E" }, { seat: "6F" }],
+  [{ seat: "7A" }, { seat: "7B" }, { seat: "7C" }, null, { seat: "7D" }, { seat: "7E" }, { seat: "7F" }],
+  [{ seat: "8A" }, { seat: "8B" }, { seat: "8C" }, null, { seat: "8D" }, { seat: "8E" }, { seat: "8F" }],
+  [{ seat: "9A" }, { seat: "9B" }, { seat: "9C" }, null, { seat: "9D" }, { seat: "9E" }, { seat: "9F" }],
+  [{ seat: "10A" }, { seat: "10B" }, { seat: "10C" }, null, { seat: "10D" }, { seat: "10E" }, { seat: "10F" }],
+  [{ seat: "11A" }, { seat: "11B" }, { seat: "11C" }, null, { seat: "11D" }, { seat: "11E" }, { seat: "11F" }],
+  [{ seat: "12A" }, { seat: "12B" }, { seat: "12C" }, null, { seat: "12D" }, { seat: "12E" }, { seat: "12F" }],
+  [{ seat: "13A" }, { seat: "13B" }, { seat: "13C" }, null, { seat: "13D" }, { seat: "13E" }, { seat: "13F" }],
+  null,
+  [{ seat: "14A", exit: true }, { seat: "14B" }, null, { seat: "14D" }, { seat: "14E" }],
+  [{ seat: "15A" }, { seat: "15B" }, null, { seat: "15D" }, { seat: "15E" }],
+  [{ seat: "16A" }, { seat: "16B" }, null, { seat: "16D" }, { seat: "16E" }],
+  [{ seat: "17A" }, { seat: "17B" }, null, { seat: "17D", exit: true }, { seat: "17E" }]
+];
+
+export const businessLayout = [
+  [{ seat: "1A" }, { seat: "1B" }, null, { seat: "1C" }, { seat: "1D" }],
+  [{ seat: "2A" }, { seat: "2B" }, null, { seat: "2C" }, { seat: "2D" }],
+  [{ seat: "3A" }, { seat: "3B" }, null, { seat: "3C" }, { seat: "3D" }],
+  [{ seat: "4A" }, { seat: "4B" }, null, { seat: "4C" }, { seat: "4D" }],
+  [{ seat: "5A" }, { seat: "5B" }, null, { seat: "5C" }, { seat: "5D" }]
+];
+export const stats = {
+    completedFlights: 152,
+    completedPercentage: '92%',
+    activeFlights: 24,
+    activePercentage: '6%',
+    canceledFlights: 8,
+    canceledPercentage: '2%',
+    totalRevenue: '$45,000',
+    revenuePercentage: '12%',
+  };
+
+  export const bookings = [
+    {
+      flightNo: "CN-K12345",
+      airline: "CloudNine Airlines",
+      route: "CDO-JFK",
+      departure: "9:00 AM",
+      arrival: "12:00 PM",
+      date: "2028-07-01",
+      passengers: 187,
+      status: "Confirmed",
+    },
+    {
+      flightNo: "SH-07456",
+      airline: "SkyHigh Airlines",
+      route: "FRA-BKK",
+      departure: "7:00 AM",
+      arrival: "3:00 PM",
+      date: "2028-07-01",
+      passengers: 177,
+      status: "Pending",
+    },
+    {
+      flightNo: "TR-54321",
+      airline: "Traveler Airways",
+      route: "LHR-DXB",
+      departure: "8:00 PM",
+      arrival: "5:00 AM",
+      date: "2028-07-02",
+      passengers: 150,
+      status: "Cancelled",
+    },
+  ];
+export const weeklySales = [1200, 1800, 2200, 3200, 1500, 2100, 1900];
+export const monthlySales = [8000, 10000, 12000, 15000, 11000, 14000, 13000];
+export const yearlySales = [50000, 60000, 70000, 80000, 75000, 70000, 65000];
+
+export const weeklyOther = [1000, 1500, 1900, 2500, 1400, 1900, 1600];
+export const monthlyOther = [5000, 7000, 8000, 10000, 6500, 9000, 8500];
+export const yearlyOther = [30000, 35000, 40000, 45000, 42000, 39000, 38000];
+
+export const chartLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+export const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top'
+    }
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        stepSize: 1000
+      }
+    }
+  }
+};
+// src/data/passengerFormData.js
+
+export const defaultFormData = {
+  firstName: "",
+  lastName: "",
+  dob: "",
+  email: "",
+  phone: "",
+  ecFirst: "",
+  ecLast: "",
+  ecEmail: "",
+  ecPhone: "",
+  sameAsP1: false,
+};
+
+export const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
+export const isValidPhone = (phone) => (phone || "").replace(/\D/g, "").length >= 7;
+
+export const getFallbackFlightId = (selectedFlights = []) => {
+  return (
+    selectedFlights?.[0]?.flightCode ||
+    selectedFlights?.[0]?.flightId ||
+    selectedFlights?.[0]?._id ||
+    "DEMO123"
+  );
+};
+
+export const getGenderChipClass = (gender) => {
+  return gender === "female"
+    ? "bg-pink-100 text-pink-700 border border-pink-300"
+    : "bg-blue-100 text-blue-700 border border-blue-300";
+};
+export const initialFlightFormData = {
+  airline: '',
+  logo: '',
+  flightCode: '',
+  departureTime: '',
+  arrivalTime: '',
+  stop: '',
+  duration: '',
+  price: '',
+  type: '',
+  baggage: '',
+  meal: '0',
+  lax: '',
+  laf: '',
+};

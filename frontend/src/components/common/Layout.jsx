@@ -6,10 +6,16 @@ import Footer from './Footer';
 const Layout = () => {
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Navbar stays fixed at the top */}
       <Navbar />
-      <main className="flex-grow bg-gray-50"> {/* Ensure this section grows to fill available space */}
+      
+      {/* Main content */}
+      <main className="flex-grow bg-gray-50">
+        {/* Render the children components here */}
         <Outlet />
       </main>
+      
+      {/* Footer stays at the bottom */}
       <Footer />
     </div>
   );
