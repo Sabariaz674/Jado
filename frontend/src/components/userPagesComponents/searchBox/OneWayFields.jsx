@@ -4,39 +4,45 @@ const OneWayFields = ({ from, setFrom, to, setTo, depart, setDepart }) => {
   const on = (setter) => (e) => setter(e.target.value);
 
   return (
-    <>
-      <div className="flex flex-col flex-1">
-        <label className="text-sm font-semibold text-gray-600 mb-1">From</label>
-        <input
-          type="text"
-          value={from}
-          onChange={on(setFrom)}
-          placeholder="LAX"
-          className="text-sm outline-none placeholder-gray-400 w-full p-2 border border-[#1e3a8a] rounded-md"
-        />
-      </div>
+    // keep same desktop look; just make it wrap on small screens
+    <div className="w-full flex-1">
+      <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap gap-3">
+        {/* From */}
+        <div className="flex-1 min-w-[180px]">
+          <label className="text-sm font-semibold text-gray-600 mb-1 block">From</label>
+          <input
+            type="text"
+            value={from}
+            onChange={on(setFrom)}
+            placeholder="Country, city"
+            className="w-full p-2 text-sm outline-none border border-[#1e3a8a] rounded-md"
+          />
+        </div>
 
-      <div className="flex flex-col flex-1">
-        <label className="text-sm font-semibold text-gray-600 mb-1">To</label>
-        <input
-          type="text"
-          value={to}
-          onChange={on(setTo)}
-          placeholder="JFK"
-          className="text-sm outline-none placeholder-gray-400 w-full p-2 border border-[#1e3a8a] rounded-md"
-        />
-      </div>
+        {/* To */}
+        <div className="flex-1 min-w-[180px]">
+          <label className="text-sm font-semibold text-gray-600 mb-1 block">To</label>
+          <input
+            type="text"
+            value={to}
+            onChange={on(setTo)}
+            placeholder="Country, city"
+            className="w-full p-2 text-sm outline-none border border-[#1e3a8a] rounded-md"
+          />
+        </div>
 
-      <div className="flex flex-col flex-1">
-        <label className="text-sm font-semibold text-gray-600 mb-1">Depart</label>
-        <input
-          type="date"
-          value={depart}
-          onChange={on(setDepart)}
-          className="text-sm outline-none w-full p-2 border border-[#1e3a8a] rounded-md"
-        />
+        {/* Depart */}
+        <div className="flex-1 min-w-[160px]">
+          <label className="text-sm font-semibold text-gray-600 mb-1 block">Depart</label>
+          <input
+            type="date"
+            value={depart}
+            onChange={on(setDepart)}
+            className="w-full p-2 text-sm outline-none border border-[#1e3a8a] rounded-md"
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

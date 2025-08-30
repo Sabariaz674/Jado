@@ -21,7 +21,7 @@ const FAQSection = () => {
     return (
       <div className="border-b border-gray-200">
         <button
-          className="flex justify-between items-center w-full py-4 text-left font-medium text-gray-800 hover:text-blue-500 transition-colors duration-200"
+          className="flex justify-between items-center w-full py-4 text-left font-medium text-gray-800 hover:text-[#1e3a8a] transition-colors duration-200"
           onClick={toggleAccordion}
           aria-expanded={isOpen}
         >

@@ -2,26 +2,25 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const AdminMenu = () => {
-  const [isOpen, setIsOpen] = useState(false); // State to toggle the sidebar on mobile
-  const sidebarRef = useRef(null); // Ref to sidebar for click detection
+  const [isOpen, setIsOpen] = useState(false); 
+  const sidebarRef = useRef(null); 
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen); // Toggle sidebar visibility
+    setIsOpen(!isOpen); 
   };
 
-  // Close the sidebar when clicking outside
   useEffect(() => {
-    // Function to handle outside click
+    
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
 
-    // Add the event listener
+    
     document.addEventListener('mousedown', handleClickOutside);
 
-    // Cleanup the event listener on component unmount
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -29,14 +28,14 @@ const AdminMenu = () => {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
+     
       <div
         ref={sidebarRef}
-        className={`pt-24 fixed left-0 top-0 h-full bg-[#1e3a8a] w-64 shadow-lg transition-all
+        className={`pt-24 fixed left-0 top-0 h-full bg-white w-64 shadow-lg transition-all
           ${isOpen ? 'block' : 'hidden'} 
           lg:block`}
       >
-        {/* Close Button for small screens */}
+        
         <div className="absolute top-4 right-4 z-50 lg:hidden">
           <button onClick={toggleMenu} className="text-white text-3xl">
             <i className="fas fa-times" />
@@ -44,7 +43,7 @@ const AdminMenu = () => {
         </div>
 
         <div className="p-4 flex flex-col">
-          {/* Logo and Menu items */}
+        
           <div className="mb-8">
             <div className="text-2xl font-bold text-yellow-700">
               <span className="text-[#1e3a8a]">Jadoo</span>
@@ -53,7 +52,7 @@ const AdminMenu = () => {
               <li>
                 <Link
                   to="/admin-dashboard"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-tachometer-alt"></i>
                   <span>Dashboard</span>
@@ -62,7 +61,7 @@ const AdminMenu = () => {
               <li>
                 <Link
                   to="add-booking"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-book"></i>
                   <span>Bookings</span>
@@ -70,8 +69,8 @@ const AdminMenu = () => {
               </li>
               <li>
                 <Link
-                  to="/schedule"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  to="/flight-schedule"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-calendar"></i>
                   <span>Schedule</span>
@@ -80,7 +79,7 @@ const AdminMenu = () => {
               <li>
                 <Link
                   to="/payments"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-credit-card"></i>
                   <span>Payments</span>
@@ -89,7 +88,7 @@ const AdminMenu = () => {
               <li>
                 <Link
                   to="/messages"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-envelope"></i>
                   <span>Messages</span>
@@ -98,7 +97,7 @@ const AdminMenu = () => {
               <li>
                 <Link
                   to="/tracking"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-location-arrow"></i>
                   <span>Flight Tracking</span>
@@ -107,7 +106,7 @@ const AdminMenu = () => {
               <li>
                 <Link
                   to="/deals"
-                  className="flex items-center space-x-2 text-white hover:bg-teal-500 hover:text-white p-2 rounded-md"
+                  className="flex items-center space-x-2 text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white p-2 rounded-md"
                 >
                   <i className="fas fa-tag"></i>
                   <span>Deals</span>

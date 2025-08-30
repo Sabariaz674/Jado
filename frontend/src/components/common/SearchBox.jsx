@@ -1,4 +1,3 @@
-// src/components/common/SearchBox.jsx
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -41,6 +40,7 @@ const SearchBox = () => {
 
   // multi-city
   const [multiTrips, setMultiTrips] = useState([{ from: "", to: "", depart: "" }]);
+
   const onChangeTrip = (i, field, value) => {
     setMultiTrips((prev) => {
       const copy = [...prev];
@@ -49,14 +49,26 @@ const SearchBox = () => {
     });
   };
   const onAddTrip = () => setMultiTrips((p) => [...p, { from: "", to: "", depart: "" }]);
+  const onRemoveTrip = (i) =>
+    setMultiTrips((prev) => (prev.length === 1 ? prev : prev.filter((_, idx) => idx !== i)));
 
   const on = (setter) => (e) => setter(e.target.value);
 
   // search
   const handleSearch = () => {
-    if (!from.trim() || !to.trim()) {
-      alert("Please enter both From and To");
-      return;
+    if (tripType !== "multi-city") {
+      if (!from.trim() || !to.trim()) {
+        alert("Please enter both From and To");
+        return;
+      }
+    } else {
+      for (let idx = 0; idx < multiTrips.length; idx++) {
+        const seg = multiTrips[idx];
+        if (!seg.from.trim() || !seg.to.trim() || !seg.depart) {
+          alert(`Please complete all fields for segment ${idx + 1}`);
+          return;
+        }
+      }
     }
 
     const criteria = {
@@ -68,7 +80,13 @@ const SearchBox = () => {
       adults,
       children,
       cabinClass,
-      ...(tripType === "multi-city" && { multiTrips }),
+      ...(tripType === "multi-city" && {
+        multiTrips: multiTrips.map((t) => ({
+          ...t,
+          from: t.from.trim().toUpperCase(),
+          to: t.to.trim().toUpperCase(),
+        })),
+      }),
     };
 
     dispatch(setSearchCriteria(criteria));
@@ -83,11 +101,36 @@ const SearchBox = () => {
     navigate(`/flight-search?${params.toString()}`);
   };
 
+  // reusable travellers + search block
+  const TravellersAndSearch = (
+    <div className="flex flex-col md:flex-row items-end gap-2 w-full lg:w-auto">
+      <TravellersDropdown
+        dropdownRef={dropdownRef}
+        open={openTravellers}
+        setOpen={setOpenTravellers}
+        adults={adults}
+        setAdults={setAdults}
+        children={children}
+        setChildren={setChildren}
+        cabinClass={cabinClass}
+        setCabinClass={setCabinClass}
+      />
+      <button
+        className="bg-[#1e3a8a] hover:bg-[#1e3a8a]  text-white font-semibold px-6 py-3 rounded-xl transition w-full mt-4 md:mt-0"
+        onClick={handleSearch}
+      >
+        Search
+      </button>
+    </div>
+  );
+
   return (
-    <div className="flex flex-col items-center mt-10 px-4 sm:px-8 mb-10">
+    <div className="flex flex-col items-center mt-10 px-4 sm:px-8 mb-15">
       {/* Trip Type */}
       <div className="w-full max-w-7xl mb-4">
-        <label htmlFor="trip-type" className="sr-only">Trip Type</label>
+        <label htmlFor="trip-type" className="sr-only">
+          Trip Type
+        </label>
         <select
           id="trip-type"
           value={tripType}
@@ -102,52 +145,48 @@ const SearchBox = () => {
 
       {/* Main Card */}
       <div className="flex flex-col shadow-lg w-full max-w-5xl bg-white p-6 rounded-2xl">
-        {/* Top row (fields differ by tripType) */}
-        <div className="flex flex-wrap lg:flex-nowrap justify-between gap-4">
-          {tripType === "one-way" && (
+        {/* Top row for one-way / round-trip */}
+        {tripType === "one-way" && (
+          <div className="flex flex-wrap lg:flex-nowrap justify-between gap-4">
             <OneWayFields
-              from={from} setFrom={setFrom}
-              to={to} setTo={setTo}
-              depart={depart} setDepart={setDepart}
+              from={from}
+              setFrom={setFrom}
+              to={to}
+              setTo={setTo}
+              depart={depart}
+              setDepart={setDepart}
             />
-          )}
-
-          {tripType === "round-trip" && (
-            <RoundTripFields
-              from={from} setFrom={setFrom}
-              to={to} setTo={setTo}
-              depart={depart} setDepart={setDepart}
-              returnDate={returnDate} setReturnDate={setReturnDate}
-            />
-          )}
-
-          {/* Travellers + Search */}
-          <div className="flex flex-col md:flex-row lg:flex-row items-end gap-2 w-full lg:w-auto">
-            <TravellersDropdown
-              dropdownRef={dropdownRef}
-              open={openTravellers}
-              setOpen={setOpenTravellers}
-              adults={adults} setAdults={setAdults}
-              children={children} setChildren={setChildren}
-              cabinClass={cabinClass} setCabinClass={setCabinClass}
-            />
-
-            <button
-              className="bg-[#1e3a8a] hover:bg-blue-800 text-white font-semibold px-6 py-3 rounded-xl transition w-full mt-4 md:mt-0"
-              onClick={handleSearch}
-            >
-              Search
-            </button>
+            {TravellersAndSearch}
           </div>
-        </div>
+        )}
+
+        {tripType === "round-trip" && (
+          <div className="flex flex-wrap lg:flex-nowrap justify-between gap-4">
+            <RoundTripFields
+              from={from}
+              setFrom={setFrom}
+              to={to}
+              setTo={setTo}
+              depart={depart}
+              setDepart={setDepart}
+              returnDate={returnDate}
+              setReturnDate={setReturnDate}
+            />
+            {TravellersAndSearch}
+          </div>
+        )}
 
         {/* Multi-city UI */}
         {tripType === "multi-city" && (
-          <MultiCityFields
-            trips={multiTrips}
-            onChangeTrip={onChangeTrip}
-            onAddTrip={onAddTrip}
-          />
+          <>
+            <MultiCityFields
+              trips={multiTrips}
+              onChangeTrip={onChangeTrip}
+              onAddTrip={onAddTrip}
+              onRemoveTrip={onRemoveTrip}
+            />
+            <div className="mt-4 flex justify-end">{TravellersAndSearch}</div>
+          </>
         )}
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { deals } from '../../../data';  // Assuming deals data is coming from here
-import Card from '../../common/cards/HotelCard';  // Import the reusable Card component
+import Card from '../../common/cards/CountryCard';  // Import the reusable Card component
 
 const CountryFlight = () => {
   return (

@@ -19,7 +19,7 @@ const Home = () => {
           backgroundColor: "#f4f4f4"
         }}
       >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center text-transparent bg-clip-text bg-[#1e3a8a] from-indigo-500 to-purple-600 mb-8 flex flex-wrap justify-center gap-2 pb-4">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center text-transparent bg-clip-text bg-[#1e3a8a] from-indigo-500 to-purple-600 flex flex-wrap justify-center gap-2 pb-4">
           <span>{headingWords[0]}</span>
 
           {headingWords.slice(1).map((word, index) => (

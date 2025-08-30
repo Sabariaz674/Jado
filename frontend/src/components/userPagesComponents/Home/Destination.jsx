@@ -35,7 +35,7 @@ const Destination = () => {
               <div className="p-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-semibold text-gray-800">
-                    {place.title}, <span className="text-indigo-600">{place.location}</span>
+                    {place.title}, <span className="text-[#1e3a8a]">{place.location}</span>
                   </h3>
                   <p className="text-gray-700 font-semibold">{place.price}</p>
                 </div>

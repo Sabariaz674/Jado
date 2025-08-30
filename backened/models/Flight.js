@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 
 const flightSchema = new mongoose.Schema({
   airline: String,
-  logo: String,            // '/uploads/filename.ext'
+  logo: String,
   flightCode: String,
-  departure: String,       // "7:00 AM - 4:15 PM"
+  departure: [String], // Corrected: This field can now hold an array of strings
   departureTime: String,
   arrivalTime: String,
-  stop: String,            // "0", "1", ...
+  stop: String,
   duration: String,
   price: Number,
   type: String,
   baggage: String,
-  meal: String,            // "No Meal" | "1 Meal" | "2 Meals"
-  lax: String,             // from airport
-  laf: String              // to airport
+  meal: String,
+  lax: String,
+  laf: String
 }, { timestamps: true });
 
 module.exports = mongoose.model('Flight', flightSchema);

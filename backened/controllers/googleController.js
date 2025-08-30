@@ -1,8 +1,10 @@
 const { oauth2client } = require("../utils/googleConfig");
 const axios = require("axios");
 const UserModel = require("../models/User");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
+
+// Import the generateToken function
+const generateToken = require("../utils/googleConfig");
 
 const googleLogin = async (req, res) => {
   try {
@@ -37,28 +39,20 @@ const googleLogin = async (req, res) => {
         name,
         email,
         image: picture,
-        googleId: id, 
+        googleId: id,
         role: "user",
       });
     } else {
       if (!user.googleId) {
-
         user.googleId = id;
-        user.image = picture; 
+        user.image = picture;
         await user.save();
       }
     }
-    if (!process.env.JWT_SECRET) {
-      return res.status(500).json({
-        message: "JWT secret not defined in environment variables",
-      });
-    }
-    
-    const token = jwt.sign(
-      { id: user._id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+
+    // Use the imported generateToken function
+    const token = generateToken(user._id, user.email, user.role);
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -69,7 +63,7 @@ const googleLogin = async (req, res) => {
     return res.status(200).json({
       message: "Google login successful",
       user: {
-        _id: user._id,         
+        _id: user._id,
         email: user.email,
         name: user.name,
         image: user.image,

@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
 import { moresearch } from '../../../data';
-import Card from '../../common/cards/HotelCard'; 
+import Card from '../../common/cards/CountryCard'; 
 
 const PlacesSearched = () => {
   return (
     <section className="px-6 md:px-20 py-12 pt-0">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-gray-800">
-          People in <span className="text-[#3B82F6]">China</span> also searched for
+          People in <span className="text-[#1e3a8a]">China</span> also searched for
         </h2>
-        <Link to="/searchchinaPlaces" className="text-sm text-blue-600 font-medium flex items-center gap-1">
+        <Link to="/searchchinaPlaces" className="text-sm text-[#1e3a8a] font-medium flex items-center gap-1">
           View All <span className="text-lg">→</span>
         </Link>
       </div>

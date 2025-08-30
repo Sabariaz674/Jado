@@ -95,8 +95,8 @@ const SeatSelection = ({ flightId: flightIdProp = "FLIGHT-1234" }) => {
           <button
             className={`flex-1 py-2 font-semibold text-sm sm:text-base ${
               classType === "economy"
-                ? "border-b-4 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-blue-600"
+                ? "border-b-4 border-[#1e3a8a] text-[#1e3a8a]"
+                : "text-gray-500 hover:text-[#1e3a8a]"
             }`}
             onClick={() => dispatch(setClassType("economy"))}
           >
@@ -105,8 +105,8 @@ const SeatSelection = ({ flightId: flightIdProp = "FLIGHT-1234" }) => {
           <button
             className={`flex-1 py-2 font-semibold text-sm sm:text-base ${
               classType === "business"
-                ? "border-b-4 border-blue-600 text-blue-600"
-                : "text-gray-500 hover:text-blue-600"
+                ? "border-b-4 border-[#1e3a8a] text-[#1e3a8a]"
+                : "text-gray-500 hover:text-[#1e3a8a]"
             }`}
             onClick={() => dispatch(setClassType("business"))}
           >
@@ -193,7 +193,7 @@ const SeatSelection = ({ flightId: flightIdProp = "FLIGHT-1234" }) => {
             Save & Close
           </button>
           <button
-            className="flex-1 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-60"
+            className="flex-1 py-2 bg-[#1e3a8a] text-white rounded-lg hover:bg-[#1e3a8a] transition disabled:opacity-60"
             onClick={handleContinue}
             disabled={!selectedSeat || loading}
           >

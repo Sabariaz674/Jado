@@ -72,7 +72,7 @@ const TicketSalesGard = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 lg:p-8 max-w-285 mx-auto flex flex-col lg:flex-row gap-6">
+    <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 lg:p-8 max-w-283 mx-auto flex flex-col lg:flex-row gap-6">
       
       {/* Left Section (Chart) */}
       <div className="w-full lg:w-1/2 flex flex-col lg:mt-7">
