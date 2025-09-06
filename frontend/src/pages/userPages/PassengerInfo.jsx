@@ -3,19 +3,26 @@ import FlightSummary from '../../components/userPagesComponents/flightSearch/Fli
 import BaggageInfoImage from '../../assets/BaggageInfoImage.png';
 import PassengerForm from '../../components/userPagesComponents/passengerLnfo/PassengerForm';
 
-
 const PassengerInfo = () => {
   return (
-    <div className="bg-gray-100 min-h-screen p-4 sm:p-6 lg:p-10 flex flex-col lg:flex-row items-start justify-center gap-8">
-      <>
+    <div className="bg-gray-100 min-h-screen p-4 sm:p-6 lg:p-10 flex flex-col lg:flex-row items-start justify-center gap-8 max-w-8xl mx-auto">
+      {/* Left: Make form section take 2/3 width */}
+      <div className="w-full lg:w-2/2 bg-white p-6 rounded-xl shadow">
         <PassengerForm />
-        <div className="w-full lg:w-96 flex flex-col gap-8">
-          <FlightSummary />
-          <div className=" rounded-xl p-6 flex justify-center items-center">
-            <img src={BaggageInfoImage} alt="Baggage Information" className="w-full h-auto rounded-lg" />
-          </div>
+      </div>
+
+      {/* Right: Summary + Baggage Image */}
+      <div className="w-full lg:w-1/3 flex flex-col gap">
+      <h1 className="text-2xl font-bold mb-5 text-[#1e3a8a]">Flight Detail</h1>
+        <FlightSummary />
+        <div className="p-6 flex justify-center items-center \">
+          <img
+            src={BaggageInfoImage}
+            alt="Baggage Information"
+            className="w-full h-auto rounded-lg"
+          />
         </div>
-      </>
+      </div>
     </div>
   );
 };

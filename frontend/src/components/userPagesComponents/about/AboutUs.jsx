@@ -1,5 +1,5 @@
 import React from "react";
-import aboutImage from "../../../assets/dubai.jpg"; // Import image
+import aboutImage from "../../../assets/dubaicountry.jpg"; // Import image
 
 const AboutUs = () => {
   return (

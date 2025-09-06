@@ -1,94 +1,143 @@
-import React from 'react';
-import {bookings} from '../../data'
+import React, { useEffect, useState } from "react";
+import BookingCard from "../../components/common/cards/BookingCard";
+import { fetchAllBookings } from "../../api/booking";
+
 const AddBooking = () => {
-  // Sample data to be displayed in the table rows
-  
+  const [bookings, setBookings] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+
+  useEffect(() => {
+    const loadBookings = async () => {
+      try {
+        const data = await fetchAllBookings();
+        setBookings(data);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    loadBookings();
+  }, []);
+
+  const closeModal = () => setSelectedBooking(null);
+
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 font-sans">
-      {/* Header section with flexible layout for responsiveness */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2 sm:mb-0">All Booking</h1>
-        <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-md shadow-lg transition duration-200">
-          + Add Booking
-        </button>
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 mb-6 ">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#1e3a8a] mt-16 sm:mt-0">
+          All Bookings
+        </h1>
+
+
       </div>
 
-      {/* Responsive table section */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        {/* Table structure for large screens */}
-        <div className="hidden xl:block overflow-x-auto">
-          <table className="min-w-full text-sm sm:text-base border-collapse">
-            <thead>
-              <tr className="bg-gray-100 text-gray-600 uppercase text-left text-xs sm:text-sm">
-                <th className="px-4 py-3 font-semibold">Flight No</th>
-                <th className="px-4 py-3 font-semibold">Airline</th>
-                <th className="px-4 py-3 font-semibold">Route</th>
-                <th className="px-4 py-3 font-semibold">Departure</th>
-                <th className="px-4 py-3 font-semibold">Arrival</th>
-                <th className="px-4 py-3 font-semibold">Date</th>
-                <th className="px-4 py-3 font-semibold">Passengers</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-700">
-              {bookings.map((booking, index) => (
-                <tr key={index} className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150">
-                  <td className="px-4 py-3 font-medium">{booking.flightNo}</td>
-                  <td className="px-4 py-3">{booking.airline}</td>
-                  <td className="px-4 py-3">{booking.route}</td>
-                  <td className="px-4 py-3">{booking.departure}</td>
-                  <td className="px-4 py-3">{booking.arrival}</td>
-                  <td className="px-4 py-3">{booking.date}</td>
-                  <td className="px-4 py-3">{booking.passengers}</td>
+
+      <div className="xl:hidden space-y-4 sm:mt-10">
+        {bookings.map((booking, index) => (
+          <BookingCard key={index} booking={booking} />
+        ))}
+      </div>
+
+
+      <div className="hidden xl:block overflow-x-auto bg-white rounded-lg shadow-lg">
+        <table className="min-w-full text-sm sm:text-base border-collapse">
+          <thead>
+            <tr className="bg-gray-100 text-gray-600 uppercase text-left text-xs sm:text-sm">
+              <th className="px-4 py-3 font-semibold">Flight No</th>
+              <th className="px-4 py-3 font-semibold">Airline</th>
+              <th className="px-4 py-3 font-semibold">Departure</th>
+              <th className="px-4 py-3 font-semibold">Arrival</th>
+              <th className="px-4 py-3 font-semibold">Passenger</th>
+              <th className="px-4 py-3 font-semibold">Status</th>
+              <th className="px-4 py-3 font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700">
+            {bookings.map((booking, index) => {
+              const flight = booking.flights?.[0] || {};
+              const passenger = booking.passenger || {};
+              return (
+                <tr
+                  key={index}
+                  className="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <td className="px-4 py-3">{flight.flightCode}</td>
+                  <td className="px-4 py-3">{flight.airline}</td>
+                  <td className="px-4 py-3">{flight.departureTime}</td>
+                  <td className="px-4 py-3">{flight.arrivalTime}</td>
+                  <td className="px-4 py-3">
+                    {passenger.firstName} {passenger.lastName}
+                  </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`${
-                        booking.status === 'Confirmed'
-                          ? 'bg-green-500'
-                          : booking.status === 'Pending'
-                          ? 'bg-[#1e3a8a]'
-                          : 'bg-red-500'
-                      } text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}
+                      className={`${booking.status === "Confirmed"
+                          ? "bg-[#1e3a8a]"
+                          : booking.status === "Pending"
+                            ? "bg-blue-800"
+                            : "bg-red-500"
+                        } text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}
                     >
                       {booking.status}
                     </span>
                   </td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={() => setSelectedBooking(booking)}
+                      className="text-[#1e3a8a] hover:underline font-medium"
+                    >
+                      View Detail
+                    </button>
+                  </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Card-like structure for small and medium screens */}
-        <div className="xl:hidden">
-          {bookings.map((booking, index) => (
-            <div key={index} className="border-b border-gray-200 p-4 last:border-b-0 hover:bg-gray-50 transition-colors duration-150">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-bold text-gray-800">{booking.flightNo}</span>
-                <span
-                  className={`${
-                    booking.status === 'Confirmed'
-                      ? 'bg-[#1e3a8a]'
-                      : booking.status === 'Pending'
-                      ? 'bg-yellow-500'
-                      : 'bg-red-500'
-                  } text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}
-                >
-                  {booking.status}
-                </span>
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-                <div className="font-medium">Airline: <span className="font-normal">{booking.airline}</span></div>
-                <div className="font-medium">Route: <span className="font-normal">{booking.route}</span></div>
-                <div className="font-medium">Departure: <span className="font-normal">{booking.departure}</span></div>
-                <div className="font-medium">Arrival: <span className="font-normal">{booking.arrival}</span></div>
-                <div className="font-medium">Date: <span className="font-normal">{booking.date}</span></div>
-                <div className="font-medium">Passengers: <span className="font-normal">{booking.passengers}</span></div>
-              </div>
-            </div>
-          ))}
-        </div>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+
+      {/* ✅ Modal */}
+      {selectedBooking && (
+        <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[#1e3a8a] w-full max-w-3xl rounded-lg shadow-lg p-6 relative">
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 text-white hover:text-white text-xl"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-xl font-bold text-white mb-4">
+              Booking Details
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4 text-sm text-white">
+              <p><span className="font-medium">Flight Code:</span> {selectedBooking.flights?.[0]?.flightCode}</p>
+              <p><span className="font-medium">Airline:</span> {selectedBooking.flights?.[0]?.airline}</p>
+              <p><span className="font-medium">Departure:</span> {selectedBooking.flights?.[0]?.departureTime}</p>
+              <p><span className="font-medium">Arrival:</span> {selectedBooking.flights?.[0]?.arrivalTime}</p>
+              <p><span className="font-medium">Stops:</span> {selectedBooking.flights?.[0]?.stops || "Direct"}</p>
+              <p><span className="font-medium">Baggage:</span> {selectedBooking.flights?.[0]?.baggage}</p>
+              <p><span className="font-medium">Meal:</span> {selectedBooking.flights?.[0]?.meal}</p>
+              <p><span className="font-medium">Passenger:</span> {selectedBooking.passenger?.firstName} {selectedBooking.passenger?.lastName}</p>
+              <p><span className="font-medium">Email:</span> {selectedBooking.passenger?.email}</p>
+              <p><span className="font-medium">Phone:</span> {selectedBooking.passenger?.phone}</p>
+              <p><span className="font-medium">Seat:</span> {selectedBooking.passenger?.seatId}</p>
+              <p><span className="font-medium">Class:</span> {selectedBooking.passenger?.classType}</p>
+              <p><span className="font-medium">Gender:</span> {selectedBooking.passenger?.gender}</p>
+              <p><span className="font-medium">Total Paid:</span> ${selectedBooking.totalPaid}</p>
+              <p><span className="font-medium">Status:</span> {selectedBooking.status}</p>
+            </div>
+
+            <div className="mt-6 text-right">
+              <button
+                onClick={closeModal}
+                className="bg-white hover:bg-white text-[#1e3a8a] px-6 py-2 rounded-lg shadow"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

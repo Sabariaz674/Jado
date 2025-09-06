@@ -49,7 +49,7 @@ const FlightScheduleCard = ({
     .join('') || 'FL';
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 lg:p-8 flex flex-col gap-4 w-full max-w-[360px] sm:max-w-full">
+    <div className="bg-white shadow-md rounded-lg p-4 sm:p-6 lg:p-8 flex flex-col gap-4 w-full  sm:max-w-full">
     
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
        
@@ -126,13 +126,6 @@ const FlightScheduleCard = ({
             </span>
             <span className="text-sm text-gray-500">{type || ''}</span>
           </div>
-
-          <button
-            className="text-white text-sm bg-[#1e3a8a] px-4 py-2 rounded-md shadow-md hover:bg-gray-700 transition w-full sm:w-auto"
-            onClick={() => console.log('View Details Clicked!')}
-          >
-            View Details
-          </button>
         </div>
       </div>
     </div>

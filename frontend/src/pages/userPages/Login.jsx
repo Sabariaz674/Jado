@@ -81,7 +81,7 @@ const Login = () => {
         dispatch(loginSuccess({ user: data.user, token: data.token }));
 
        
-        Cookies.set('userInfo', JSON.stringify(data.user), {
+        Cookies.set('user', JSON.stringify(data.user), {
           expires: 7,
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'Strict',

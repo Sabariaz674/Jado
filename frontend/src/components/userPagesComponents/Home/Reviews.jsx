@@ -14,16 +14,16 @@ const Reviews = () => {
   };
 
   return (
-    <section className="px-6 md:px-20 py-12 pt-0 m-12">
-      <h2 className="text-center text-3xl font-semibold text-gray-800 mb-12">
+    <section className="px-4 sm:px-6 md:px-20 py-12 ">
+      <h2 className="text-center text-2xl sm:text-3xl font-semibold text-gray-800 mb-12">
         What <span className="text-indigo-600">Jadoo</span> users are saying
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center lg:ml-70">
         {reviews.map((review, index) => (
           <div
             key={index}
-            className="bg-white rounded-2xl shadow-md p-6 w-full max-w-sm h-[220px] flex flex-col justify-between"
+            className="bg-white rounded-2xl shadow-md p-6 w-full max-w-sm flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center gap-3 mb-3">
@@ -40,10 +40,12 @@ const Reviews = () => {
                 </div>
               </div>
 
-              <div className="text-yellow-500 mb-2">
+              {/* Rating stars */}
+              <div className="text-yellow-500 mb-2 text-sm">
                 {"★".repeat(review.rating) + "☆".repeat(5 - review.rating)}
               </div>
 
+              {/* Review text */}
               <p className="text-sm text-gray-700 leading-relaxed">
                 {expandedIndex === index ? review.text : getPreviewText(review.text)}{" "}
                 {review.text.length > 110 && (

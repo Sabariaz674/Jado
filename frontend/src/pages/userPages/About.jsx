@@ -2,8 +2,9 @@ import React from 'react'
 import Hero from '../../components/userPagesComponents/about/hero'
 import Features from '../../components/userPagesComponents/about/Features'
 import AboutUs from '../../components/userPagesComponents/about/AboutUs'
-import More from '../../components/userPagesComponents/about/More'
+
 import Reviews from '../../components/userPagesComponents/home/Reviews'
+import ContactUs from '../../components/userPagesComponents/about/ContactUs'
 
 function About() {
   return (
@@ -11,7 +12,7 @@ function About() {
       <Hero/>
       <Features/>
       <AboutUs/>
-      <More/>
+      <ContactUs/>
      <Reviews/>
     </div>
   )

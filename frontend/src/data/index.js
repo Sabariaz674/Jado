@@ -1,52 +1,25 @@
 // Image imports
-import saudiaImg from '../assets/saudia.jpeg';
-import dubaiImg from '../assets/dubai.jpg';
-import ukImg from '../assets/uk.jpg';
-import chinaImg from '../assets/china.jpg';
+import saudiaImg from '../assets/saudiacountry.jpeg';
+import dubaiImg from '../assets/dubaicountry.jpg';
+import ukImg from '../assets/ukcountry.jpg';
+import chinaImg from '../assets/chinacountry.jpg';
 
-import ukimg from '../assets/uk1.jpg';
-import saudiaImg1 from '../assets/saudia1.png';
-import dubaiImg2 from '../assets/dubai1.jpg';
-import chinaImg3 from '../assets/china1.jpg';
-import dubaiimg4 from '../assets/dubai2.jpg';
-import saudiaimg5 from '../assets/sauida2.jpg';
+import ukimg from '../assets/destination.jpg';
+import saudiaImg1 from '../assets/destination2.jpg';
+import dubaiImg2 from '../assets/destination3.jpg';
+import chinaImg3 from '../assets/destination4.jpg';
+import dubaiimg4 from '../assets/destination5.jpg';
+import saudiaimg5 from '../assets/destination6.png';
 
-import profile1 from "../assets/profile1.jpg";
-import profile2 from "../assets/profile2.jpg";
-import profile3 from "../assets/profile1.jpg";
-
-
-import saudiaplace from "../assets/hotel1.jpg";
-import dubaiplace from "../assets/hotel2.jpg";
-import ukplace from "../assets/hotel3.jpg";
-import chinaplace from "../assets/hotel4.jpg";
-
-
-import profile4 from '../assets/profile1.jpg';
-import profile5 from '../assets/profile2.jpg';
-import profile6 from '../assets/profile1.jpg';
-import profile7 from '../assets/profile2.jpg';
-import profile8 from '../assets/profile1.jpg';
-import profile9 from '../assets/profile2.jpg';
-
-import chinahotel from '../assets/chinahotel.jpg';
-import chinahotel2 from '../assets/chinahotel2.jpg';
-import chinahotel3 from '../assets/chinahotel3.jpg';
-
-import chinahotel4 from '../assets/chinahotel.jpg';
-import chinahotel5 from '../assets/chinahotel2.jpg';
-
-
-import f1 from '../assets/f1.jpg';
-import f2 from '../assets/f2.jpg';
-import f3 from '../assets/f3.jpg';
-import f4 from '../assets/f4.jpg';
-import f5 from '../assets/f5.jpg';
+import profile1 from "../assets/jadouser1.jpg";
+import profile2 from "../assets/jadouser2.jpg";
+import profile3 from "../assets/jadouser3.jpg";
 
 
 
 
-// Exported deals
+
+
 export const deals = [
   {
     image: chinaImg,
@@ -58,7 +31,7 @@ export const deals = [
   {
     image: saudiaImg,
     title: "Saudi Arabia",
-    subtitle: "Explore the rich history and culture of Saudi Arabia, home to the Grand Mosque and beautiful deserts",
+    subtitle: "Explore the rich history and culture of Saudi Arabia, home to the Grand Mosque",
 
     location: "Riyadh"
   },
@@ -72,7 +45,7 @@ export const deals = [
   {
     image: ukImg,
     title: "United Kingdom",
-    subtitle: "Explore iconic landmarks like Big Ben, Buckingham Palace, and the beautiful countryside of the UK!",
+    subtitle: "Explore iconic landmarks like Big Ben, Buckingham Palace",
 
     location: "London"
   },
@@ -84,42 +57,42 @@ export const destinations = [
     image: ukimg,
     title: "Palace of Westminster, London",
     subtitle: "Home to the UK Parliament and iconic Big Ben clock tower",
-    price: "$1,050",
+  
     location: "United Kingdom"
   },
   {
     image: saudiaImg1,
     title: "Al-Masjid an-Nabawi, Madinah",
-    subtitle: "The Prophet's Mosque – A sacred sanctuary and the second holiest site in Islam, attracting millions of pilgrims from around the world",
-    price: "$1,020",
+    subtitle: "The Prophet's Mosque – A sacred sanctuary and the second holiest site in Islam",
+    
     location: "Saudi Arabia"
   },
   {
     image: dubaiImg2,
     title: "Luxury Beach Resort, Dubai",
     subtitle: "Experience opulence by the sea with palm-lit elegance and Arabian architecture",
-    price: "$1,350",
+    
     location: "Dubai"
   },
   {
     image: chinaImg3,
     title: "Yangshuo Town, Guilin",
     subtitle: "Close to Guilin Liangjiang International Airport with scenic karst landscapes",
-    price: "$990",
+    
     location: "China"
   },
   {
     image: dubaiimg4,
     title: "Burj Khalifa & Downtown Skyline, Dubai",
     subtitle: "Marvel at the tallest building on Earth surrounded by the dazzling lights of Downtown Dubai",
-    price: "$1,450",
+    
     location: "Dubai"
   },
   {
     image: saudiaimg5,
     title: "Masjid al-Haram, Makkah",
     subtitle: "The holiest site in Islam, home to the sacred Kaaba",
-    price: "$1,020",
+    
     location: "Saudi Arabia"
   },
 ];
@@ -151,155 +124,57 @@ export const reviews = [
   },
 ];
 
-//export stays
-export const stays = [
-  {
-    title: "Stay among the atolls in",
-    location: "Maldives",
-    description:
-      "From the 2nd century AD, the islands were known as the 'Money Isles' due to the abundance of cowry shells, a currency of the early ages.",
-    image: saudiaplace,
-  },
-  {
-    title: "Experience the Ourika Valley in",
-    location: "Morocco",
-    description:
-      "Morocco’s Hispano-Moorish architecture blends influences from Berber culture, Spain, and contemporary artistic currents in the Middle East.",
-    image: dubaiplace,
-  },
-  {
-    title: "Live traditionally in",
-    location: "Mongolia",
-    description:
-      "Traditional Mongolian yurts consist of an angled latticework of wood or bamboo for walls, ribs, and a wheel.",
-    image: ukplace,
-  },
-  {
-    title: "Discover ancient wonders in",
-    location: "China",
-    description:
-      "Explore serene landscapes, traditional architecture, and rich cultural heritage in China's hidden retreats.",
-    image: chinaplace,
-  },
-];
+// src/data/placesData.js
 
-//Exportflight
- export const flights = [
-  {
-    airline: 'Dubai',
-    logo: profile4,
-    duration: 'SH-ZAY607',
-    departure: '7:00AM - 4:15PM',
-    stop: '1 stop',
-    stopDetails: '2h 45m in HNL',
-    price: '$624',
-    type: 'round trip',
-  },
-  {
-    airline: 'china',
-    logo: profile5,
-    duration: 'SH-ZAY607',
-    departure: '7:35AM - 12:15PM',
-    stop: '1 stop',
-    stopDetails: '50m in HKG',
-    price: '$663',
-    type: 'round trip',
-  },
-  {
-    airline: 'Delta',
-    logo: profile6,
-    duration: 'SH-ZAY607',
-    departure: '9:47AM - 4:15PM',
-    stop: '1 stop',
-    stopDetails: '4h 05m in ICN',
-    price: '$756',
-    type: 'round trip',
-  },
-  {
-    airline: 'Uk',
-    logo: profile7,
-    duration: 'SH-ZAY607',
-    departure: '7:00AM - 4:15PM',
-    stop: '1 stop',
-    stopDetails: '2h 45m in HNL',
-    price: '$624',
-    type: 'round trip',
-  },
-  {
-    airline: 'Japan',
-    logo: profile8,
-    duration: 'SH-ZAY607',
-    departure: '7:35AM - 12:15PM',
-    stop: '1 stop',
-    stopDetails: '50m in HKG',
-    price: '$663',
-    type: 'round trip',
-  },
-  {
-    airline: 'Delta',
-    logo: profile9,
-    duration: 'SH-ZAY608',
-    departure: '9:47AM - 4:15PM',
-    stop: '1 stop',
-    stopDetails: '4h 05m in ICN',
-    price: '$756',
-    type: 'round trip',
-  },
-];
-//export placetostay
-export const places = [
-  {
-    title: 'Hotel Kaneyamaen and Bessho SASA',
-    description: 'Located at the base of Mount Fuji, Hotel Kaneyamaen is a traditional Japanese ryokan with a modern twist. Enjoy a private onsen bath and a private multi-course kaiseki dinner.',
-    image: chinahotel,
-  },
-  {
-    title: 'HOTEL THE FLAG',
-    description: 'Make a stop in Osaka and stay at HOTEL THE FLAG, just a few minutes walk to experience the food culture surrounding Dotonbori. Just one minute away is the Shinsaibashi shopping street.',
-    image: chinahotel2,
-  },
-  {
-    title: '9 Hours Shinjuku',
-    description: 'Experience a truly unique stay in an authentic Japanese capsule hotel. 9 Hours Shinjuku is minutes from one of Japan\'s busiest train stations. Just take the NEX train from Narita airport!',
-    image: chinahotel3,
-  },
-];
-export const morePlaces = [
-  {
-    title: 'Hotel Kaneyamaen and Bessho SASA',
-    description: 'Located at the base of Mount Fuji, Hotel Kaneyamaen is a traditional Japanese ryokan with a modern twist. Enjoy a private onsen bath and a private multi-course kaiseki dinner.',
-    image: chinahotel5, // Replace with your image path
-  },
-  {
-    title: 'HOTEL THE FLAG',
-    description: 'Make a stop in Osaka and stay at HOTEL THE FLAG, just a few minutes walk to experience the food culture surrounding Dotonbori. Just one minute away is the Shinsaibashi shopping street.',
-    image: chinahotel4, // Replace with your image path
-  },
- 
-];
+import chinaImg1 from "../assets/chinaplace2.jpg";
+import chinaImg2 from "../assets/chinaplace3.jpg";
+import chinaImg4 from "../assets/chinaplace.jpg";
 
-//people  search
- export const moresearch = [
-  {
-    image: f1, // Add the correct image path or URL
-    title: 'Shanghai, China',
-    description: 'An international city rich in culture.',
-    price: '$598',
+import dubaiplace from "../assets/dubiplace2.jpg";
+import dubaiplace2 from "../assets/dubiplace.jpg";
+import dubaiplace3 from "../assets/dubiplace3.jpg";
+
+import saudiaplace from "../assets/saudiaplace.jpg";
+import saudiaplace2 from "../assets/saudiaplace2.jpg";
+import saudiaplace3 from "../assets/saudiaplace3.jpg";
+
+import ukplace from "../assets/ukplace.jpg";
+import ukplace2 from "../assets/ukplace2.jpg";
+import ukplace3 from "../assets/ukplace3.jpg";
+
+export const placesData = {
+  "China": {
+    images: [
+      { src: chinaImg1, title: "Great Wall", description: "One of the wonders of the world stretching over 13,000 miles." },
+      { src: chinaImg2, title: "Forbidden City", description: "Historic palace in Beijing with rich cultural heritage." },
+      { src: chinaImg4, title: "Shanghai Skyline", description: "Modern cityscape with iconic skyscrapers and riverside views." },
+    ],
   },
-  {
-    image: f2,
-    title: 'Nairobi, Kenya',
-    description: 'Dubbed the Safari Capital of the World.',
-    price: '$1,248',
+  "Saudi Arabia": {
+    images: [
+      { src: saudiaplace, title: "Desert Safari", description: "Explore the beautiful dunes of Saudi Arabia." },
+      { src: saudiaplace2, title: "Riyadh City", description: "Modern capital city with cultural landmarks." },
+      { src: saudiaplace3, title: "Red Sea Coast", description: "Stunning beaches and coral reefs." },
+    ],
   },
-  {
-    image: f3,
-    title: 'Seoul, South Korea',
-    description: 'This modern city is a traveler’s dream.',
-    price: '$589',
+  "Dubai, UAE": {
+    images: [
+      { src: dubaiplace, title: "Burj Khalifa", description: "The tallest building in the world with amazing views." },
+      { src: dubaiplace2, title: "Palm Jumeirah", description: "Iconic man-made island shaped like a palm tree." },
+      { src: dubaiplace3, title: "Dubai Marina", description: "Luxury waterfront with skyscrapers and yachts." },
+    ],
   },
-  // Add more objects as needed
-];
+  "United Kingdom": {
+    images: [
+      { src: ukplace, title: "Big Ben", description: "Famous clock tower and London landmark." },
+      { src: ukplace2, title: "Tower Bridge", description: "Iconic bridge over the River Thames." },
+      { src: ukplace3, title: "Stonehenge", description: "Ancient prehistoric monument in Wiltshire." },
+    ],
+  },
+};
+
+export default placesData;
+
 export const jadooFaqData = [
   {
     title: 'How does Jadoo work?',

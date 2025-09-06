@@ -1,9 +1,17 @@
-// backened/routes/paymentRoutes.js
-const router = require('express').Router();
-const { createCheckoutSession } = require('../controllers/paymentController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const express = require("express");
+const router = express.Router();
+const {
+  createCheckoutSession,
+  handleStripeWebhook,
+  getBookingBySessionId,
+ 
+} = require("../controllers/paymentController");
 
-// only logged-in users can create checkout session
-router.post('/checkout-session', authMiddleware, createCheckoutSession);
+
+router.post("/create-checkout-session", createCheckoutSession);
+router.get("/booking-detail", getBookingBySessionId);
+router.post("/webhook", handleStripeWebhook);
+
+
 
 module.exports = router;

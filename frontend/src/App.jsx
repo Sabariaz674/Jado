@@ -16,16 +16,22 @@ import SeatSelection from './pages/userPages/SeatSelection';
 import About from './pages/userPages/About';
 import Contact from './pages/userPages/Contact';
 import Payment from './pages/userPages/Payment';
-import ProtectedRoute from './components/common/ProtectedRoute';
 import AddFlightForm from './components/adminPagesComponents/AddFlightForm'
+import BookingDetail from './pages/userPages/BookingDetail'
+import ScrollToTop from './components/common/ScrollToTop';
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 function App() {
   
 
   return (
+    <>
+    <ScrollToTop/>
     <Routes>
       {/* User Dashboard */}
       <Route path="/user-dashboard" element={<UserDashboard />} />
+      
+      
 
       {/* User Layout Pages */}
       <Route element={<Layout />}>
@@ -34,11 +40,13 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="flight-search" element={<FlightSearch />} />
         <Route path="passenger-info" element={<PassengerInfo />} />
-        <Route path="seat-selection" element={<SeatSelection />} />
+        <Route path="seat-selection" element={<ProtectedRoute><SeatSelection /></ProtectedRoute>} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
-        <Route path="payment" element={<ProtectedRoute><Payment /></ProtectedRoute>}
-        />
+       <Route path="payment" element={<Payment />} />
+       <Route path="/bookingdetail" element={<BookingDetail />} />
+        
+       
       </Route>
 
       {/* Admin Layout Pages */}
@@ -54,6 +62,7 @@ function App() {
 
       </Route>
     </Routes>
+    </>
   );
 }
 

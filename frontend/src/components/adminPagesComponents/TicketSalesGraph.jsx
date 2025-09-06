@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Bar } from 'react-chartjs-2';
-import PopularDestination from './PopularDestination';
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,88 +7,75 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
-} from 'chart.js';
+  Legend,
+} from "chart.js";
+import { getTicketSalesStats } from "../../api/ticketgraph"; 
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const TicketSalesGard = () => {
-  const [timePeriod, setTimePeriod] = useState('week');
+  const [timePeriod, setTimePeriod] = useState("week"); // default: week
+  const [stats, setStats] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const weeklyData = [1200, 1800, 2200, 3200, 1500, 2100, 1900];
-  const monthlyData = [8000, 10000, 12000, 15000, 11000, 14000, 13000];
-  const yearlyData = [50000, 60000, 70000, 80000, 75000, 70000, 65000];
-
-  const handleTimePeriodChange = (period) => {
-    setTimePeriod(period);
-  };
+  // Fetch data using helper
+  useEffect(() => {
+    const fetchStats = async () => {
+      setLoading(true);
+      try {
+        const data = await getTicketSalesStats(timePeriod);
+        setStats(data);
+      } catch (err) {
+        console.error("Failed to fetch sales stats:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, [timePeriod]);
 
   const data = {
-    labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    labels: stats.map((s) => s._id),
     datasets: [
       {
-        label: 'Tickets Sold',
-        data:
-          timePeriod === 'week'
-            ? weeklyData
-            : timePeriod === 'month'
-            ? monthlyData
-            : yearlyData,
-        backgroundColor: '#1e3a8a',
+        label: "Tickets Sold",
+        data: stats.map((s) => s.totalBookings),
+        backgroundColor: "#1e3a8a",
         borderRadius: 6,
-        borderSkipped: false
+        borderSkipped: false,
       },
-      {
-        label: 'Other Sales',
-        data:
-          timePeriod === 'week'
-            ? [1000, 1500, 1900, 2500, 1400, 1900, 1600]
-            : timePeriod === 'month'
-            ? [5000, 7000, 8000, 10000, 6500, 9000, 8500]
-            : [30000, 35000, 40000, 45000, 42000, 39000, 38000],
-        backgroundColor: '#D1D5DB',
-        borderRadius: 6,
-        borderSkipped: false
-      }
-    ]
+    ],
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'top'
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        ticks: {
-          stepSize: 1000
-        }
-      }
-    }
+    plugins: { legend: { position: "top" } },
+    scales: { y: { beginAtZero: true } },
   };
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 lg:p-8 max-w-283 mx-auto flex flex-col lg:flex-row gap-6">
-      
       {/* Left Section (Chart) */}
-      <div className="w-full lg:w-1/2 flex flex-col lg:mt-7">
-        {/* Header with Title and Dropdown */}
+      <div className="w-full lg:w-full flex flex-col lg:mt-7">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
           <div>
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-700">
               Ticket Sales
             </h2>
-            <p className="text-lg sm:text-xl font-bold text-gray-900">12,500 Tickets Sold</p>
+            <p className="text-lg sm:text-xl font-bold text-gray-900">
+              {loading
+                ? "Loading..."
+                : `${stats.reduce((sum, s) => sum + s.totalBookings, 0)} Tickets Sold`}
+            </p>
           </div>
           <div className="mt-2 sm:mt-0 flex-shrink-0">
             <select
               className="bg-[#1e3a8a] text-white px-4 py-2 rounded-md text-sm"
               value={timePeriod}
-              onChange={(e) => handleTimePeriodChange(e.target.value)}
+              onChange={(e) => setTimePeriod(e.target.value)}
             >
+              <option value="day">This Day</option>
               <option value="week">This Week</option>
               <option value="month">This Month</option>
               <option value="year">This Year</option>
@@ -97,17 +83,14 @@ const TicketSalesGard = () => {
           </div>
         </div>
 
-        {/* Chart */}
         <div className="w-full h-64 sm:h-80 lg:h-96 mt-7">
-          <Bar data={data} options={options} />
+          {loading ? (
+            <p className="text-center text-gray-500">Loading chart...</p>
+          ) : (
+            <Bar data={data} options={options} />
+          )}
         </div>
       </div>
-
-      {/* Right Section (Popular Destinations) */}
-      <div className="w-full lg:w-1/2 mt-4 lg:mt-0">
-        <PopularDestination />
-      </div>
-      
     </div>
   );
 };

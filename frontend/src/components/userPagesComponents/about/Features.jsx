@@ -6,7 +6,7 @@ const Features = () => {
     <section className="py-16 bg-gray-50">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-3xl font-extrabold text-[#1e3a8a] mb-8">
-          Why Choose Us?
+          Why Book Flights With Us?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Card 1 */}
@@ -14,9 +14,9 @@ const Features = () => {
             <div className="flex justify-center mb-4">
               <FaUsers className="text-[#1e3a8a] text-4xl" />
             </div>
-            <h3 className="text-xl font-semibold text-[#1e3a8a] mb-2">5000+ Our Local Guides</h3>
+            <h3 className="text-xl font-semibold text-[#1e3a8a] mb-2">5000+ Happy Travelers</h3>
             <p className="text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.
+              Thousands of customers trust us every month to book affordable and safe flights worldwide.
             </p>
           </div>
           {/* Card 2 */}
@@ -24,9 +24,9 @@ const Features = () => {
             <div className="flex justify-center mb-4">
               <FaCheckCircle className="text-[#1e3a8a] text-4xl" />
             </div>
-            <h3 className="text-xl font-semibold text-[#1e3a8a] mb-2">100% Trusted Agency</h3>
+            <h3 className="text-xl font-semibold text-[#1e3a8a] mb-2">100% Secure Booking</h3>
             <p className="text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.
+              With verified airlines and trusted payment gateways, your booking experience is always safe and reliable.
             </p>
           </div>
           {/* Card 3 */}
@@ -34,9 +34,9 @@ const Features = () => {
             <div className="flex justify-center mb-4">
               <FaTrophy className="text-[#1e3a8a] text-4xl" />
             </div>
-            <h3 className="text-xl font-semibold text-[#1e3a8a] mb-2">28+ Years of Experience</h3>
+            <h3 className="text-xl font-semibold text-[#1e3a8a] mb-2">28+ Years of Excellence</h3>
             <p className="text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.
+              With decades of experience in the travel industry, we guarantee you the best deals and smooth journeys.
             </p>
           </div>
         </div>

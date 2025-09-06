@@ -13,7 +13,7 @@ function AdminLayout() {
       </div>
 
      
-      <div className="flex-1 ml-0 sm:ml-10 lg:ml-[250px]  sm:mt-10 overflow-y-auto">
+      <div className="flex-1 ml-0 sm:ml-10 lg:ml-[250px]  sm:mt-10 overflow-y-auto" >
         
         <div className="fixed top-0 left-0 w-full z-50">
           <AdminHeader />

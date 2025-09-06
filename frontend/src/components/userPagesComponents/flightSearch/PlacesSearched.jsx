@@ -1,33 +1,59 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; 
-import { moresearch } from '../../../data';
-import Card from '../../common/cards/CountryCard'; 
+import React from "react";
+import { useLocation } from "react-router-dom";
+import placesData from "../../../data";  
 
-const PlacesSearched = () => {
+const PlacesSearches = () => {
+  const location = useLocation();
+  const country = location.state?.country;
+
+  if (!country) {
+    return (
+      <p className="text-center text-gray-500 py-20">
+        No country selected
+      </p>
+    );
+  }
+
+  const countryKey = Object.keys(placesData).find(
+    (key) => key.toLowerCase() === country.toLowerCase()
+  );
+
+  const place = countryKey ? placesData[countryKey] : null;
+
+  if (!place) {
+    return (
+      <p className="text-center text-gray-500 py-20">
+        No places found for "{country}"
+      </p>
+    );
+  }
+
   return (
-    <section className="px-6 md:px-20 py-12 pt-0">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">
-          People in <span className="text-[#1e3a8a]">China</span> also searched for
-        </h2>
-        <Link to="/searchchinaPlaces" className="text-sm text-[#1e3a8a] font-medium flex items-center gap-1">
-          View All <span className="text-lg">→</span>
-        </Link>
-      </div>
+    <section className="px-6 md:px-20 py-12">
+      <h2 className="text-2xl font-semibold mb-8 text-gray-800">
+        Famous Places in <span className="text-[#1e3a8a]">{countryKey}</span>
+      </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {moresearch.map((place, index) => (
-          <Card
+      <div className="flex flex-wrap justify-between gap-6">
+        {place.images.map((img, index) => (
+          <div
             key={index}
-            image={place.image}
-            title={place.title}
-            description={place.description}
-            link={place.link} // assuming moresearch data contains a 'link' property
-          />
+            className="flex-1 max-w-[30%] bg-white rounded-lg shadow overflow-hidden"
+          >
+            <img
+              src={img.src}
+              alt={`${countryKey}-${img.title}`}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="text-center text-gray-700 font-medium">{img.title}</h3>
+              <p className="text-center text-gray-600 text-sm mt-1">{img.description}</p>
+            </div>
+          </div>
         ))}
       </div>
     </section>
   );
 };
 
-export default PlacesSearched;
+export default PlacesSearches;

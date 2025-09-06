@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import FlightCard from '../../common/cards/FlightCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFlights, toggleSelectedFlight } from '../../../redux/slices/flightSlice';
+import { addFlightToSummary } from "../../../redux/slices/flightSummarySlice";
+
+
 
 const FlightListing = () => {
   const dispatch = useDispatch();
@@ -19,20 +22,20 @@ const FlightListing = () => {
 
   const [visibleCount, setVisibleCount] = useState(3);
 
-  // 🔎 Search mode active?
+
   const usingSearch = Boolean(searchCriteria) || searchStatus !== 'idle';
 
-  // 🧾 Jo list dikhani hai
+
   const flightsToDisplay = usingSearch ? searchResults : flights;
 
-  // ⬇️ Fetch all ONLY when not in search mode
+
   useEffect(() => {
     if (!usingSearch && (status === 'idle' || addFlightStatus === 'succeeded')) {
       dispatch(fetchFlights());
     }
   }, [dispatch, status, addFlightStatus, usingSearch]);
 
-  // list change par visibleCount ko sane rakho
+
   useEffect(() => {
     setVisibleCount((v) => Math.min(v, flightsToDisplay.length || 3));
   }, [flightsToDisplay.length]);
@@ -62,7 +65,7 @@ const FlightListing = () => {
     );
   }
 
-  // ❌ Errors
+
   if (usingSearch && searchStatus === 'failed') {
     return (
       <div className="flex justify-center items-center h-full">
@@ -78,7 +81,8 @@ const FlightListing = () => {
     );
   }
 
-  // 🚫 Empty states
+
+
   if (!flightsToDisplay.length) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
@@ -100,7 +104,10 @@ const FlightListing = () => {
           <div key={flight._id} className="relative">
             <FlightCard
               {...flight}
-              onSelect={() => dispatch(toggleSelectedFlight(flight))}
+              onSelect={() => {
+                dispatch(toggleSelectedFlight(flight));       
+                dispatch(addFlightToSummary(flight));         
+              }}
             />
           </div>
         ))}

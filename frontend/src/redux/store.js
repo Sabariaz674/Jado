@@ -1,19 +1,22 @@
+// src/redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import flightReducer from "./slices/flightSlice";
-import passengerReducer from "./slices/PassengerSlice";
-import seatReducer from "./slices/seatSlice.js";
+import flightSummaryReducer from "./slices/flightSummarySlice";
+import seatsReducer from "./slices/seatsSlice";
+import passengerReducer from "./slices/passengerSlice"; 
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,       // Login / Signup / Auth
-    flights: flightReducer,  // Flight related state
-    passenger: passengerReducer, // Passenger details
-    seats: seatReducer,      // Seat fetch + reserve (cookies ke sath)
+    auth: authReducer,
+    flights: flightReducer,
+    flightSummary: flightSummaryReducer,
+    seats: seatsReducer, 
+     passenger: passengerReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Cookies ki wajah se serializable check hata diya
+      serializableCheck: false,
     }),
 });
 

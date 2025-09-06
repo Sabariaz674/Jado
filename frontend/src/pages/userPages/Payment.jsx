@@ -1,41 +1,20 @@
-// frontend/src/pages/userPages/Payment.jsx
-import { useSelector } from "react-redux";
-import PaymentForm from "../../components/paymentInfo/PaymentForm";
+import React from 'react';
+import PaymentForm from '../../components/userPagesComponents/payment/PaymentForm';
+import FlightSummary from '../../components/userPagesComponents/flightSearch/FlightSummary';
 
-export default function Payment() {
-  const passengerData = useSelector((s) => s.passengers?.data);
-  const flightId = passengerData?.flightId;
-
-  async function startCheckout() {
-    if (!flightId) {
-      alert("Missing flight selection. Please select a flight again.");
-      return;
-    }
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/pay/checkout-session`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // send JWT cookie
-          body: JSON.stringify({ flightId, quantity: 1 }),
-        }
-      );
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        alert(data.message || "Unable to start payment");
-        return;
-      }
-      window.location.href = data.url; // Stripe Checkout
-    } catch (e) {
-      console.error(e);
-      alert("Network error. Try again.");
-    }
-  }
-
+function Payment() {
+  
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
-      <PaymentForm onSubmit={startCheckout} />
+    
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col lg:flex-row gap-8 justify-center">
+      {/* Left: Payment Form */}
+      <div className="w-full lg:w-2/3">
+        <PaymentForm />
+      </div>
+
+      
     </div>
   );
 }
+
+export default Payment;

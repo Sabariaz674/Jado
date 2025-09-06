@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import PlacesSearches from '../../components/userPagesComponents/flightSearch/PlacesSearched';
 import SearchBox from "../../components/common/SearchBox";
@@ -8,7 +8,11 @@ import FlightSummary from "../../components/userPagesComponents/flightSearch/Fli
 
 function FlightSearch() {
   const navigate = useNavigate();
-  const selectedFlights = useSelector((s) => s.flights.selectedFlights);
+  const location = useLocation();
+  const selectedFlights = useSelector((s) => s.flightSummary.selectedFlights || []);
+
+  // Country passed from CountryFlight
+  const country = location.state?.country || "China"; 
 
   const goPassengerInfo = () => navigate('/seat-selection');
 
@@ -32,8 +36,8 @@ function FlightSearch() {
                 onClick={goPassengerInfo}
                 disabled={!selectedFlights.length}
                 className={`w-full py-3 font-semibold rounded-lg shadow transition
-                  ${selectedFlights.length
-                    ? 'bg-[#1e3a8a] text-white hover:bg-indigo-700'
+    ${selectedFlights.length
+                    ? 'bg-[#1e3a8a] text-white hover:bg-[#1e3a8a]'
                     : 'bg-gray-300 text-gray-600 cursor-not-allowed'}`}
                 title={selectedFlights.length ? 'Continue' : 'Select at least one flight'}
               >
@@ -44,7 +48,8 @@ function FlightSearch() {
         </div>
       </div>
 
-      <PlacesSearches />
+      {/* Pass country dynamically */}
+      <PlacesSearches country={country} />
     </>
   );
 }

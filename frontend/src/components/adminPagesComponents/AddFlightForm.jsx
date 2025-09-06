@@ -15,10 +15,10 @@ const AddFlightForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams();                     // <-- URL id
-  const flightToEdit = location.state?.flight;    // optional state
+  const { id } = useParams();                     
+  const flightToEdit = location.state?.flight;    
   const isEdit = Boolean(id || flightToEdit?._id);
-  const updateId = flightToEdit?._id || id;       // <-- effective id to use
+  const updateId = flightToEdit?._id || id;    
 
   const [formData, setFormData] = useState(initialFlightFormData);
   const [errors, setErrors] = useState({});
